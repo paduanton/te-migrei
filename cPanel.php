@@ -15,7 +15,7 @@ class cPanel
     // interno
     private $url_download;
     private $nome_arq;
-    private $cookie = "/var/www/temigrei/cookies/cookie.txt";
+    private $cookie = "/var/www/te-migrei/cookies/cookie.txt";
 
 
     function __construct($ip, $usuario, $senha)
@@ -25,11 +25,11 @@ class cPanel
         $this->senha = $senha;
     }
 
-    function gera_backup ()
+    function gera_backup()
     {
-        $url = $this->host.'/login/?login_only=1';
+        $url = $this->host . '/login/?login_only=1';
 
-        $dados_usuario = array (
+        $dados_usuario = array(
             'user' => $this->usuario,
             'pass' => $this->senha,
             'goto_uri' => '/',
@@ -62,14 +62,16 @@ class cPanel
         curl_close($ch);
     }
 
-    function limpa_cookie () {
+    function limpa_cookie()
+    {
         if (file_exists($this->cookie)) {
             unlink($this->cookie);
         }
     }
 
-    function lista_backup () {
-        $url = $this->host.'/login/?login_only=1';
+    function lista_backup()
+    {
+        $url = $this->host . '/login/?login_only=1';
         $dados_usuario = array(
             'user' => $this->usuario,
             'pass' => $this->senha,
@@ -116,7 +118,7 @@ class cPanel
 
                 $total_backups++; // quantidade de backups
 
-                if($input->getAttribute('title') == 'complete') {
+                if ($input->getAttribute('title') == 'complete') {
                     $link_download = $input->getAttribute('href');
                     $links_backup[$backups_validos] = $link_download;
                     $backups_validos++; // quantidade de backups válidos
@@ -128,46 +130,57 @@ class cPanel
 
         curl_close($ch);
 
-        $link_ultimo_backup = $links_backup[$backups_validos-1];
+        $link_ultimo_backup = $links_backup[$backups_validos - 1];
 
-        echo '<p>Main backup: '.$link_ultimo_backup.'</p>';
+        echo '<p>Main backup: ' . $link_ultimo_backup . '</p>';
 
         $conversao = explode("-", $link_ultimo_backup); // desloca data do link com elemento extra
         $conversao2 = explode('_', $conversao[1]); // remove elemento extra
 
-        $conversao3 = str_replace(".","/",$conversao2[0]); // 12.22.2018 para 12.22-2018
+        $conversao3 = str_replace(".", "/", $conversao2[0]); // 12.22.2018 para 12.22-2018
 
         $data_ultimo_backup = date('d-m-Y', strtotime($conversao3));
 
-        echo 'Data último backup: '.$data_ultimo_backup;
+        echo 'Data último backup: ' . $data_ultimo_backup;
 
         $data_atual = date('d-m-Y');
 
-        echo '<br>Data atual: '.$data_atual;
+        echo '<br>Data atual: ' . $data_atual;
 
-        $backup_principal =$this->host.$link_ultimo_backup;
+        $backup_principal = $this->host . $link_ultimo_backup;
 
-        if(strtotime($data_atual) == strtotime($data_ultimo_backup)){ // data atual = data do ultimo backup
+        if (strtotime($data_atual) == strtotime($data_ultimo_backup)) { // data atual = data do ultimo backup
 
-            echo '<p style="color: green;">Backup válido. Data: '.$data_ultimo_backup.' (hoje)</p>Backup: '.$backup_principal;
+            echo '<p style="color: green;">Backup válido. Data: ' . $data_ultimo_backup . ' (hoje)</p>Backup: ' . $backup_principal;
 
         } elseif (strtotime($data_atual) > strtotime($data_ultimo_backup)) { // data atual maior que a data do ultimo backuo
 
-            echo '<p style="color: red;">Backup é antigo. Data do último backup: '.$data_ultimo_backup.' - Gere novo backup</p>';
+            echo '<p style="color: red;">Backup é antigo. Data do último backup: ' . $data_ultimo_backup . ' - Gere novo backup</p>';
         } else { // data atual menor que a  data do último backup
             echo '<p style="color: cornflowerblue;">Desconhecido</p>';
         }
 
-//        $down = shell_exec('wget -c --load-cookies ' . $this->cookie . ' --httṕ-user='.$this->usuario. ' --http-password='.$this->senha. ' ' . $backup_principal  );
+        return $backup_principal;
+    }
 
+
+    public function baixa_backuṕ($link_download)
+    {
         $comando = 'cd /var/www/temigrei/cookies && wget --http-user=$this->usuario --http-password=$this->senha --header="Cookie: $this->cookie" -c $backup_principal';
-        echo '<br><br>'.$comando.'<br><br>';
+
+        $down = shell_exec($comando);
+
+       echo '<br><br>'.$comando.'<br><br>';
+
         $output = shell_exec($comando);
-        if (!$output) {
+        if ($output) {
             echo "success";
         } else {
             echo "fail: " . $output;
         }
+
+        passthru('$(which wget) -c --load-cookies=' . $this->cookie . ' --httṕ-user=' . $this->usuario . ' --http-password=' . $this->senha . ' ' . $link_download . ' 2>&1 ');
+
     }
 
 }
