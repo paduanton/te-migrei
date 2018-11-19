@@ -164,22 +164,22 @@ class cPanel
     }
 
 
-    public function baixa_backuṕ($link_download)
+    public function baixa_backup($link_download)
     {
-        $comando = 'cd /var/www/temigrei/cookies && wget --http-user=$this->usuario --http-password=$this->senha --header="Cookie: $this->cookie" -c $backup_principal';
+//        $comando = 'cd /var/www/temigrei/cookies && wget --http-user=$this->usuario --http-password=$this->senha --header="Cookie: $this->cookie" -c $backup_principal';
 
-        $down = shell_exec($comando);
+        $down = 'curl -o /var/www/te-migrei --cookie ' . $this->cookie . ' ' . $link_download;
 
-       echo '<br><br>'.$comando.'<br><br>';
+        echo '<br><br>'.$down.'<br><br>';
 
-        $output = shell_exec($comando);
+        $output = shell_exec($down);
         if ($output) {
             echo "success";
         } else {
             echo "fail: " . $output;
         }
 
-        passthru('$(which wget) -c --load-cookies=' . $this->cookie . ' --httṕ-user=' . $this->usuario . ' --http-password=' . $this->senha . ' ' . $link_download . ' 2>&1 ');
+        passthru($down);
 
     }
 
