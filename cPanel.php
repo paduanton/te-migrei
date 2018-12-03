@@ -166,15 +166,14 @@ class cPanel
 
     public function baixa_backup($link_download)
     {
-        $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c '.$link_download.' 2>&1';
+        $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c "'.$link_download.'" 2>&1';
 
-        $down = 'curl -O --cookie ' . $this->cookie . ' ' . $link_download.' 2>&1';
-
+        $down = 'curl -O --cookie ' . $this->cookie . ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
         echo '<br><br>'.$down.'<br>';
         echo $comando.'<br>';
 
-        $output = shell_exec('$(which '.$down.')');
-
+//        $output = shell_exec('');
+        $output = shell_exec($down);
         if ($output) {
             echo "<br>success:<br>";
             print $output;
@@ -186,7 +185,7 @@ class cPanel
 
     }
 
-     function valida_backup() {
+    function valida_backup() {
         $hoje = date('m.d.Y');
         $html = $this->get();
         preg_match_all('<li><strong>backup-' . $hoje. '(.*).tar.gz(.*)\[(.*)\]<br \/><\/strong>/', $html, $progresso);
