@@ -55,14 +55,14 @@ class cPanel
 
         $gera_backup = $this->host . $output['security_token'] . '/' . $backup[4] . '/' . $backup[5] . '/backup/dofullbackup.html';
 
-        echo $gera_backup;
+        echo $gera_backup.'<br>';
 
         curl_setopt($ch, CURLOPT_URL, $gera_backup);
         curl_exec($ch);
         curl_close($ch);
     }
 
-    function limpa_cookie()
+    private function limpa_cookie()
     {
         if (file_exists($this->cookie)) {
             unlink($this->cookie);
@@ -166,21 +166,69 @@ class cPanel
 
     public function baixa_backup($link_download)
     {
-//        $comando = 'cd /var/www/temigrei/cookies && wget --http-user=$this->usuario --http-password=$this->senha --header="Cookie: $this->cookie" -c $backup_principal';
+        $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c '.$link_download.' 2>&1';
 
-        $down = 'curl -o /var/www/te-migrei --cookie ' . $this->cookie . ' ' . $link_download;
+        $down = 'curl -O --cookie ' . $this->cookie . ' ' . $link_download.' 2>&1';
 
-        echo '<br><br>'.$down.'<br><br>';
+        echo '<br><br>'.$down.'<br>';
+        echo $comando.'<br>';
 
-        $output = shell_exec($down);
+        $output = shell_exec('$(which '.$down.')');
+
         if ($output) {
-            echo "success";
+            echo "<br>success:<br>";
+            print $output;
         } else {
-            echo "fail: " . $output;
+            echo '<br>fail:<br>';
+            print $output;
+        }
+//        passthru($down);
+
+    }
+
+     function valida_backup() {
+        $hoje = date('m.d.Y');
+        $html = $this->get();
+        preg_match_all('<li><strong>backup-' . $hoje. '(.*).tar.gz(.*)\[(.*)\]<br \/><\/strong>/', $html, $progresso);
+
+//        var_dump($progresso);
+    }
+
+    private function get() {
+        $url = $this->host . '/login/?login_only=1';
+        $dados_usuario = array(
+            'user' => $this->usuario,
+            'pass' => $this->senha,
+            'goto_uri' => '/',
+            'email_radio' => '0',
+        );
+
+        $this->limpa_cookie();
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dados_usuario));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $retorno = curl_exec($ch); // string com url de login fragmentada
+
+        $output = json_decode($retorno, true); // gera array com "retornos" gerados
+        if (json_last_error()) {
+            die('ERRO:' . PHP_EOL);
         }
 
-        passthru($down);
+        $url2 = $this->host . $output['redirect'];
 
+        curl_setopt($ch, CURLOPT_URL, $url2);
+
+        $backup = explode("/", $url2); // gera array dos elementos da url da pagina inicial
+
+        $pagina_backup = $this->host . $output['security_token'] . '/' . $backup[4] . '/' . $backup[5] . '/backup/fullbackup.html';
+
+        curl_setopt($ch, CURLOPT_URL, $pagina_backup);
+        return $retorno3 = curl_exec($ch);
     }
 
 }
