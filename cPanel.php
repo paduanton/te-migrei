@@ -130,37 +130,42 @@ class cPanel
 
         curl_close($ch);
 
-        $link_ultimo_backup = $links_backup[$backups_validos - 1];
+        if($total_backups == 0) {
+            echo "Não há backups disponiveis<br>GERE NOVO BACKUP";
+        } else {
 
-        echo '<p>Main backup: ' . $link_ultimo_backup . '</p>';
+            $link_ultimo_backup = $links_backup[$backups_validos - 1];
 
-        $conversao = explode("-", $link_ultimo_backup); // desloca data do link com elemento extra
-        $conversao2 = explode('_', $conversao[1]); // remove elemento extra
+            echo '<p>Main backup: ' . $link_ultimo_backup . '</p>';
 
-        $conversao3 = str_replace(".", "/", $conversao2[0]); // 12.22.2018 para 12.22-2018
+            $conversao = explode("-", $link_ultimo_backup); // desloca data do link com elemento extra
+            $conversao2 = explode('_', $conversao[1]); // remove elemento extra
 
-        $data_ultimo_backup = date('d-m-Y', strtotime($conversao3));
+            $conversao3 = str_replace(".", "/", $conversao2[0]); // 12.22.2018 para 12.22-2018
 
-        echo 'Data último backup: ' . $data_ultimo_backup;
+            $data_ultimo_backup = date('d-m-Y', strtotime($conversao3));
 
-        $data_atual = date('d-m-Y');
+            echo 'Data último backup: ' . $data_ultimo_backup;
 
-        echo '<br>Data atual: ' . $data_atual;
+            $data_atual = date('d-m-Y');
 
-        $backup_principal = $this->host . $link_ultimo_backup;
+            echo '<br>Data atual: ' . $data_atual;
 
-        if (strtotime($data_atual) == strtotime($data_ultimo_backup)) { // data atual = data do ultimo backup
+            $backup_principal = $this->host . $link_ultimo_backup;
 
-            echo '<p style="color: green;">Backup válido. Data: ' . $data_ultimo_backup . ' (hoje)</p>Backup: ' . $backup_principal;
+            if (strtotime($data_atual) == strtotime($data_ultimo_backup)) { // data atual = data do ultimo backup
 
-        } elseif (strtotime($data_atual) > strtotime($data_ultimo_backup)) { // data atual maior que a data do ultimo backuo
+                echo '<p style="color: green;">Backup válido. Data: ' . $data_ultimo_backup . ' (hoje)</p>Backup: ' . $backup_principal;
 
-            echo '<p style="color: red;">Backup é antigo. Data do último backup: ' . $data_ultimo_backup . ' - Gere novo backup</p>';
-        } else { // data atual menor que a  data do último backup
-            echo '<p style="color: cornflowerblue;">Desconhecido</p>';
+            } elseif (strtotime($data_atual) > strtotime($data_ultimo_backup)) { // data atual maior que a data do ultimo backuo
+
+                echo '<p style="color: red;">Backup é antigo. Data do último backup: ' . $data_ultimo_backup . ' - Gere novo backup</p>';
+            } else { // data atual menor que a  data do último backup
+                echo '<p style="color: cornflowerblue;">Desconhecido</p>';
+            }
+
+            return $backup_principal;
         }
-
-        return $backup_principal;
     }
 
 
@@ -188,12 +193,25 @@ class cPanel
     function valida_backup() {
         $hoje = date('m.d.Y');
         $html = $this->get();
-        preg_match_all('<li><strong>backup-' . $hoje. '(.*).tar.gz(.*)\[(.*)\]<br \/><\/strong>/', $html, $progresso);
 
+        preg_match_all('/<div class="warningmsg">backup-' . $hoje . '(.*).tar.gz(.*)\[(.*)\]<br \/><\/div>/', $this->result, $this->in_progress);
+
+        $this->in_progress = $this->in_progress[3][0];
+
+        if ($this->in_progress == "in progress") {
+            $this->in_progress = 1;
+            $this->timeout = 0;
+        } else if ($this->in_progress == "failed, timeout") {
+            $this->in_progress = 0;
+            $this->timeout = 1;
+        } else {
+            $this->in_progress = 0;
+            $this->timeout = 0;
+        }
 //        var_dump($progresso);
     }
 
-    private function get() {
+    public function get() {
         $url = $this->host . '/login/?login_only=1';
         $dados_usuario = array(
             'user' => $this->usuario,
@@ -227,7 +245,10 @@ class cPanel
         $pagina_backup = $this->host . $output['security_token'] . '/' . $backup[4] . '/' . $backup[5] . '/backup/fullbackup.html';
 
         curl_setopt($ch, CURLOPT_URL, $pagina_backup);
-        return $retorno3 = curl_exec($ch);
+        $retorno3 = curl_exec($ch);
+        curl_close($ch);
+
+        return $retorno3;
     }
 
 }
