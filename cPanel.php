@@ -130,10 +130,7 @@ class cPanel
 
         curl_close($ch);
 
-        if($total_backups == 0) {
-            echo "Não há backups disponiveis<br>GERE NOVO BACKUP";
-        } else {
-
+        if($total_backups > 0) {
             $link_ultimo_backup = $links_backup[$backups_validos - 1];
 
             echo '<p>Main backup: ' . $link_ultimo_backup . '</p>';
@@ -166,18 +163,20 @@ class cPanel
 
             return $backup_principal;
         }
+        return null;
     }
 
 
     public function baixa_backup($link_download)
     {
+        $file = explode("/", $link_download); //  $file[4];
+
         $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c "'.$link_download.'" 2>&1';
 
         $down = 'curl -O --cookie ' . $this->cookie . ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
         echo '<br><br>'.$down.'<br>';
         echo $comando.'<br>';
 
-//        $output = shell_exec('');
         $output = shell_exec($down);
         if ($output) {
             echo "<br>success:<br>";
@@ -188,30 +187,54 @@ class cPanel
         }
 //        passthru($down);
 
+        return $file;
     }
 
-    function valida_backup() {
+    private function compacta_ftp($caminho, $dominio) {
+        echo "-> Compactando estrutura FTP\n";
+
+        if (is_dir($caminho . '/homedir/public_html')) {
+            chdir($caminho . '/homedir/public_html');
+        } else {
+            chdir($caminho . '/public_html');
+        }
+
+
+        shell_exec("tar czvf web/tmpdir/" . $dominio . ".tar.gz *");
+    }
+
+    private function descompacta($file, $caminho)
+    {
+        shell_exec('mkdir ' . $caminho . '; tar xzvf ' . $file . " -C " . $caminho);
+        shell_exec('chmod -R 777 ' . $caminho);
+    }
+
+    public function valida_backup() {
         $hoje = date('m.d.Y');
         $html = $this->get();
 
-        preg_match_all('/<div class="warningmsg">backup-' . $hoje . '(.*).tar.gz(.*)\[(.*)\]<br \/><\/div>/', $this->result, $this->in_progress);
+        $pattern = "/<strong>backup-" . $hoje . "(.*).tar.gz(.*)\[(.*)\]</strong>(.*)[inprogress]/";
 
-        $this->in_progress = $this->in_progress[3][0];
+        preg_match_all($pattern, $html, $in_progress);
 
-        if ($this->in_progress == "in progress") {
+        $in_progress = $in_progress[3][0];
+
+        if ($in_progress == "in progress") {
             $this->in_progress = 1;
             $this->timeout = 0;
-        } else if ($this->in_progress == "failed, timeout") {
-            $this->in_progress = 0;
-            $this->timeout = 1;
+        } else if ($in_progress == "failed, timeout") {
+            $in_progress = 0;
+            $timeout = 1;
         } else {
-            $this->in_progress = 0;
-            $this->timeout = 0;
+            $in_progress = 0;
+            $timeout = 0;
         }
-//        var_dump($progresso);
+
     }
 
-    public function get() {
+
+
+    function get() {
         $url = $this->host . '/login/?login_only=1';
         $dados_usuario = array(
             'user' => $this->usuario,
