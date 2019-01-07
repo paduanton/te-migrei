@@ -16,6 +16,7 @@ class cPanel
     private $url_download;
     private $nome_arq;
     private $cookie = "/var/www/te-migrei/cookies/cookie.txt";
+    private $dir = '/var/www/te-migrei/backup';
 
 
     function __construct($ip, $usuario, $senha)
@@ -187,7 +188,7 @@ class cPanel
         }
 //        passthru($down);
 
-        return $file;
+        return $file[4];
     }
 
     private function compacta_ftp($caminho, $dominio) {
@@ -203,10 +204,29 @@ class cPanel
         shell_exec("tar czvf web/tmpdir/" . $dominio . ".tar.gz *");
     }
 
-    private function descompacta($file, $caminho)
+    public function descompacta($file)
     {
-        shell_exec('mkdir ' . $caminho . '; tar xzvf ' . $file . " -C " . $caminho);
-        shell_exec('chmod -R 777 ' . $caminho);
+        $arquivo = explode("=", $file); //  $arquivo[1];
+        $arquivo2 = explode('.tar.gz', $arquivo[1]); //  $arquivo2[0];
+
+        $down = 'tar -vzxf '.$this->dir.'/'. $file;
+        echo '<br><br>'.$down.'<br>';
+        $output = shell_exec($down);
+
+        if($output) {
+            echo '<br>success<br>';
+            $chmod = 'chmod -R 777 ' . $this->dir. '/' . $arquivo2[0];
+            echo '<br><br>'.$chmod.'<br>';
+            $output2 = shell_exec($chmod);
+
+            if($output2) {
+                echo '<br>success 2';
+            }
+        } else {
+            echo '<br>fail<br>';
+        }
+
+        return $arquivo2[0];
     }
 
     public function valida_backup() {
