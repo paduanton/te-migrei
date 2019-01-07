@@ -158,6 +158,8 @@ class cPanel
             } elseif (strtotime($data_atual) > strtotime($data_ultimo_backup)) { // data atual maior que a data do ultimo backuo
 
                 echo '<p style="color: red;">Backup é antigo. Data do último backup: ' . $data_ultimo_backup . ' - Gere novo backup</p>';
+
+//                return null; se backup é inválido finaliza sessão e não deixa
             } else { // data atual menor que a  data do último backup
                 echo '<p style="color: cornflowerblue;">Desconhecido</p>';
             }
@@ -213,7 +215,7 @@ class cPanel
         echo '<br><br>'.$down.'<br>';
         $output = shell_exec($down);
 
-        if($output) {
+        if(is_dir($arquivo2[0])) {
             echo '<br>success<br>';
             $chmod = 'chmod -R 777 ' . $this->dir. '/' . $arquivo2[0];
             echo '<br><br>'.$chmod.'<br>';
