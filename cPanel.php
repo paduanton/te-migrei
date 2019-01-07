@@ -16,7 +16,7 @@ class cPanel
     private $url_download;
     private $nome_arq;
     private $cookie = "/var/www/te-migrei/cookies/cookie.txt";
-    private $dir = '/var/www/te-migrei/backup';
+    private $dir = '/var/www/te-migrei';
 
 
     function __construct($ip, $usuario, $senha)
