@@ -16,7 +16,9 @@ class cPanel
     private $url_download;
     private $nome_arq;
     private $cookie = "/var/www/te-migrei/cookies/cookie.txt";
-    private $dir = '/var/www/te-migrei';
+    private $backup_dir = '/var/www/te-migrei/backup';
+    private $dir_raiz = '/var/www/temigrei';
+    private $dominio_deploy = 'http://paduanton.com.br';
 
 
     function __construct($ip, $usuario, $senha)
@@ -172,7 +174,7 @@ class cPanel
 
     public function baixa_backup($link_download)
     {
-        $file = explode("/", $link_download); //  $file[4];
+        $file = explode("/", $link_download); //  $file[4]; = download?file=backup-12.31.2018_15-04-02_temigrei.tar.gz
 
         $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c "'.$link_download.'" 2>&1';
 
@@ -180,10 +182,22 @@ class cPanel
         echo '<br><br>'.$down.'<br>';
         echo $comando.'<br>';
 
+        $move_backup = 'mv ' . $file[4]. ' ' . $this->backup_dir . '/';
+        echo $move_backup;
         $output = shell_exec($down);
+
+
         if ($output) {
             echo "<br>success:<br>";
             print $output;
+
+            $output2 = shell_exec($move_backup);
+
+            if($output2){
+            echo "<br>success2<br>";
+            } else {
+                echo '<br>failed<br>';
+            }
         } else {
             echo '<br>fail:<br>';
             print $output;
@@ -193,17 +207,29 @@ class cPanel
         return $file[4];
     }
 
-    private function compacta_ftp($caminho, $dominio) {
-        echo "-> Compactando estrutura FTP\n";
-
-        if (is_dir($caminho . '/homedir/public_html')) {
-            chdir($caminho . '/homedir/public_html');
+    public function compacta_ftp($file) {
+        echo "<br><br> -> Compactando estrutura FTP<br>";
+        $dir = $this->dir_raiz.'/'.$file . '/homedir/public_html';
+        echo $dir;
+        if (is_dir($dir)) {
+            chdir($file . '/homedir/public_html');
+            echo '<br>é dir';
         } else {
-            chdir($caminho . '/public_html');
+            echo '<br>não é dir 2';
         }
 
+        $compacta = 'tar -czvf '.$this->dir_raiz.'/download/'.$file.'.tar.gz * 2>&1';
+        echo $compacta;
+        $out = shell_exec($compacta);
 
-        shell_exec("tar czvf web/tmpdir/" . $dominio . ".tar.gz *");
+        if($out) {
+            echo '<br>succed compactation<br>';
+        } else {
+            echo '<br>failed compactation<br>';
+        }
+
+        $link = $this->dominio_deploy.'/'. $file .'.tar.gz';
+        return $link;
     }
 
     public function descompacta($file)
@@ -211,13 +237,13 @@ class cPanel
         $arquivo = explode("=", $file); //  $arquivo[1];
         $arquivo2 = explode('.tar.gz', $arquivo[1]); //  $arquivo2[0];
 
-        $down = 'tar -vzxf '.$this->dir.'/'. $file;
+        $down = 'tar -vzxf '.$this->backup_dir.'/'. $file;
         echo '<br><br>'.$down.'<br>';
         $output = shell_exec($down);
 
         if(is_dir($arquivo2[0])) {
-            echo '<br>success<br>';
-            $chmod = 'chmod -R 777 ' . $this->dir. '/' . $arquivo2[0];
+            echo '<br>success<br>';     // $this->backup_dir.
+            $chmod = 'chmod -R 777 ' . $this->backup_dir. '/' . $arquivo2[0]; // ajustar diretório
             echo '<br><br>'.$chmod.'<br>';
             $output2 = shell_exec($chmod);
 
