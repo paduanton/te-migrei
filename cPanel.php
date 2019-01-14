@@ -228,7 +228,7 @@ class cPanel
             echo '<br>failed compactation<br>';
         }
 
-        $link = $this->dominio_deploy.'/'. $file .'.tar.gz';
+        $link = $this->dominio_deploy.'/download/'. $file .'.tar.gz';
         return $link;
     }
 
