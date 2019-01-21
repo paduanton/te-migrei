@@ -1,0 +1,329 @@
+.invalid-feedback {
+    display: block;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    padding-top: 50px;
+    background-color: #5F3CA1;
+}
+
+a {
+    color: white;
+}
+
+a:hover {
+    color: #efefef;
+}
+
+nav {
+    background-color: #502e88;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.btn-primary, .btn-info {
+    background-color: #08bebf;
+}
+
+.navbar-toggler {
+    border-color: white;
+}
+
+#logo-kinghost {
+    margin-bottom: 5px;
+}
+
+.btn-outline-success, .btn-outline-danger {
+    margin: 0 auto;
+}
+
+input {
+    outline: none;
+    border: none;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+input::-webkit-input-placeholder {
+    color: #adadad;
+}
+
+.card {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+h5.card-header {
+    background-color: white;
+}
+
+p > span {
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 5px;
+    text-decoration: underline;
+}
+
+.scrollup {
+    background: #d8d8d8;
+    border-radius: 50px;
+    bottom: 50px;
+    content: url("https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/VisualEditor_-_Icon_-_Collapse.svg/1024px-VisualEditor_-_Icon_-_Collapse.svg.png");
+    height: 45px;
+    width: 45px;
+    position: fixed;
+    right: 15px;
+    text-indent: -9999px;
+    opacity: 0;
+    -webkit-transition: opacity 500ms ease-in;
+    -moz-transition: opacity 500ms ease-in;
+    -o-transition: opacity 500ms ease-in;
+    -ms-transition: opacity 500ms ease-in;
+    transition: opacity 500ms ease-in;
+}
+
+.scrollup:hover {
+    background-color: #d2d2d2;
+}
+
+ir-para-o-topo:hover {
+    cursor: pointer;
+}
+
+.visible {
+    opacity: 1;
+    -webkit-transition: opacity 500ms ease-in;
+    -moz-transition: opacity 500ms ease-in;
+    -o-transition: opacity 500ms ease-in;
+    -ms-transition: opacity 500ms ease-in;
+    transition: opacity 500ms ease-in;
+}
+
+.container-login100 {
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: inherit;
+}
+
+table, td {
+    border: 2px solid #FAC600 !important;
+}
+
+td a {
+    color: black !important;
+
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #eeeeea;
+}
+
+td a:hover {
+    color: #2d2d2d !important;
+}
+
+.list-group {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    color: black !important;
+}
+
+.header {
+    background-color: #f6f6f6;
+    color: black;
+    font-size: 1.5em;
+    padding: 1rem;
+    text-align: center;
+}
+
+.table-responsive {
+    border: 2px solid #FAC600;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.dropdown-menu a {
+    color: #989898;
+}
+
+.dropdown-menu a:active, .dropdown-menu a:hover {
+    color: #848484;
+    background-color: #f3f3f3;
+}
+
+.jumbotron {
+    margin-bottom: 0;
+    border-radius: 0;
+    color: white;
+    background-color: #5F3CA1;
+}
+
+.jumbotron code {
+    color: #fff;
+}
+
+#logo-modal {
+    position: absolute;
+    left: 50%;
+    top: 18%;
+    margin-top: -25px;
+    margin-left: -25px;
+    width: 42px;
+    height: 31px;
+}
+
+.wrap-cadastro100 {
+    width: 390px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 40px 55px 33px 55px;
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.login100-form-title {
+    display: block;
+    font-size: 30px;
+    color: #333333;
+    line-height: 1.2;
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.wrap-cadast100 {
+    width: 100%;
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin-top: 14px;
+}
+
+.input100 {
+    font-size: 15px;
+    color: #555555;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    height: 45px;
+    background: transparent;
+    padding: 0 5px;
+}
+
+.focus-input100 {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.focus-input100::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    background: -webkit-linear-gradient(left, rgba(49, 49, 49, 0.91), #6e6e6e);
+    background: -o-linear-gradient(left, #313131, #6e6e6e);
+    background: -moz-linear-gradient(left, #313131, #6e6e6e);
+    background: linear-gradient(left, #313131, #6e6e6e);
+}
+
+.focus-input100::after {
+    font-size: 15px;
+    color: #999999;
+    line-height: 1.2;
+    content: attr(data-placeholder);
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 16px;
+    left: 0px;
+    padding-left: 5px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.input100:focus + .focus-input100::after {
+    top: -15px;
+}
+
+.input100:focus + .focus-input100::before {
+    width: 100%;
+}
+
+.btn-show-pass {
+    font-size: 15px;
+    color: #999999;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    padding-right: 5px;
+    cursor: pointer;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.btn-primary {
+    border: none;
+    width: 80px;
+    border-radius: 15px;
+}
+
+.btn-primary:disabled {
+    cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+    .wrap-cadastro100 {
+        padding: 77px 15px 33px 15px;
+    }
+}
