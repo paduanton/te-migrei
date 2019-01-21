@@ -160,7 +160,7 @@ class cPanel
             } elseif (strtotime($data_atual) > strtotime($data_ultimo_backup)) { // data atual maior que a data do ultimo backuo
 
                 echo '<p style="color: red;">Backup é antigo. Data do último backup: ' . $data_ultimo_backup . ' - Gere novo backup</p>';
-
+                die("... aplicação encerrada ... ");
 //                return null; se backup é inválido finaliza sessão e não deixa
             } else { // data atual menor que a  data do último backup
                 echo '<p style="color: cornflowerblue;">Desconhecido</p>';
