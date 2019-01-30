@@ -9,4 +9,4 @@
 define('DB_USUARIO', 'root');
 define('DB_SENHA', 'nheac4257');
 define('DB_HOST', 'localhost');
-define('DB_NOME', 'DesafioDevLabs');
+define('DB_NOME', 'temigrei');

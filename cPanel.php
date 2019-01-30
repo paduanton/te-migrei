@@ -11,13 +11,13 @@ class cPanel
     private $host;
     private $usuario;
     private $senha;
+    private $cookie;
 
     // interno
     private $url_download;
     private $nome_arq;
-    private $cookie = "/var/www/te-migrei/cookies/cookie.txt";
     private $backup_dir = '/var/www/te-migrei/backup';
-    private $dir_raiz = '/var/www/temigrei';
+    private $dir_raiz = '/var/www/te-migrei';
     private $dominio_deploy = 'http://paduanton.com.br';
 
 
@@ -26,12 +26,23 @@ class cPanel
         $this->usuario = $usuario;
         $this->host = "http://$ip:2082";
         $this->senha = $senha;
+        $this->cookie = uniqid().'.txt';
     }
 
-    function gera_backup()
+    public function cookie(){
+
+        if(fopen($this->dir_raiz.'/cookies/'.$this->cookie, "w")) {
+            echo '<br>cookie criado<br>';
+            return $this->dir_raiz.'/cookies/'.$this->cookie;
+        } else {
+            echo 'erro no cookie';
+        }
+    }
+
+
+    public function inicia_curl()
     {
         $url = $this->host . '/login/?login_only=1';
-
         $dados_usuario = array(
             'user' => $this->usuario,
             'pass' => $this->senha,
@@ -39,16 +50,22 @@ class cPanel
             'email_radio' => '0',
         );
 
-        $this->limpa_cookie();
+        $nome_cookie = $this->cookie();
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $nome_cookie);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $nome_cookie);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dados_usuario));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $retorno = curl_exec($ch); // string com url de login fragmentada
+
+        return $ch; // string com url de login fragmentada
+    }
+
+    function gera_backup()
+    {
+        $ch = $this->inicia_curl();
+        $retorno = curl_exec($ch);
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados
 
@@ -65,33 +82,21 @@ class cPanel
         curl_close($ch);
     }
 
-    private function limpa_cookie()
+    public function limpa_cookie($cookie) // ajustar função ----
     {
-        if (file_exists($this->cookie)) {
-            unlink($this->cookie);
+        if (file_exists($cookie)) {
+            if(unlink($cookie)) {
+                echo 'cookie removido';
+            }
+        } else {
+            echo 'cookie não existe';
         }
     }
 
     function lista_backup()
     {
-        $url = $this->host . '/login/?login_only=1';
-        $dados_usuario = array(
-            'user' => $this->usuario,
-            'pass' => $this->senha,
-            'goto_uri' => '/',
-            'email_radio' => '0',
-        );
-
-        $this->limpa_cookie();
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dados_usuario));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        $retorno = curl_exec($ch); // string com url de login fragmentada
+        $ch = $this->inicia_curl();
+        $retorno = curl_exec($ch);
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados
         if (json_last_error()) {
@@ -131,7 +136,8 @@ class cPanel
             }
         }
 
-        curl_close($ch);
+        curl_close($ch); // fecha conexão com curl
+        $this->limpa_cookie('/var/www/te-migrei/cookies/'.$this->cookie);
 
         if($total_backups > 0) {
             $link_ultimo_backup = $links_backup[$backups_validos - 1];
@@ -256,6 +262,5 @@ class cPanel
 
         return $arquivo2[0];
     }
-
 
 }

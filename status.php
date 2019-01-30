@@ -101,7 +101,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{id_processo}}</td> <!-- {{$index + 1}} -->
+                <td>{{id_processo}}</td>
                 <td>{{dominio}}</td>
                 <td>{{status}}</td>
                 <td>{{data}}</td>
