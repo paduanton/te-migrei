@@ -2,7 +2,7 @@
 include 'header.php';
 ?>
 
-<div class="container animate-box" data-animate-effect="fadeIn">
+<div class="container">
     <ul class="list-group">
         <li class="list-group-item">Total de migrações em andamento: {{count}}</li>
     </ul>
@@ -14,7 +14,7 @@ include 'header.php';
             <tr>
                 <td>
                     <a href="#">
-                        id_processo
+                        id
                     </a>
                 </td>
                 <td>

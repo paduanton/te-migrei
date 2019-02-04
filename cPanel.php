@@ -268,4 +268,42 @@ class cPanel
         return $arquivo2[0];
     }
 
+    public function getDominio(){
+
+        $ch = $this->inicia_curl();
+        $retorno = curl_exec($ch);
+
+        $output = json_decode($retorno, true); // gera array com "retornos" gerados
+        if (json_last_error()) {
+            die('ERRO:' . PHP_EOL);
+        }
+
+       $url2 = $this->host . $output['redirect'];
+        curl_setopt($ch, CURLOPT_URL, $url2);
+
+//        curl_setopt($ch, CURLOPT_URL, $pagina_backup);
+        echo $retorno3 = curl_exec($ch);
+
+        $dom = new DOMDocument();
+        @$dom->loadHTML($retorno3);
+        $links_backup = array();
+        $total_backups = 0;
+        $backups_validos = 0;
+
+        foreach ($dom->getElementsByTagName('span') as $input) {
+
+            if ($input->getAttribute('id') == 'txtDomainName') {
+                $link_download = $input->getAttribute('href');
+                $links_backup[$backups_validos] = $link_download;
+                $backups_validos++; // quantidade de backups válidos
+                echo $link_download; // mostra links de download de todos backups completos
+                echo "<br/>";
+            }
+        }
+
+        curl_close($ch); // fecha conexão com curl
+        $this->limpa_cookie('/var/www/te-migrei/cookies/'.$this->cookie);
+
+    }
+
 }
