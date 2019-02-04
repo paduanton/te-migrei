@@ -18,8 +18,7 @@ class cPanel
     private $nome_arq;
     private $backup_dir = '/var/www/te-migrei/backup';
     private $dir_raiz = '/var/www/te-migrei';
-    private $dominio_deploy = 'http://paduanton.com.br';
-
+    private $url;
 
     function __construct($ip, $usuario, $senha)
     {
@@ -27,6 +26,7 @@ class cPanel
         $this->host = "http://$ip:2082";
         $this->senha = $senha;
         $this->cookie = uniqid().'.txt';
+        $this->url = "http://$_SERVER[HTTP_HOST]";
     }
 
     public function cookie(){
@@ -34,9 +34,11 @@ class cPanel
         if(fopen($this->dir_raiz.'/cookies/'.$this->cookie, "w")) {
             echo '<br>cookie criado<br>';
             return $this->dir_raiz.'/cookies/'.$this->cookie;
-        } else {
-            echo 'erro no cookie';
         }
+
+        echo 'erro no cookie';
+
+        return null;
     }
 
 
@@ -80,6 +82,9 @@ class cPanel
         curl_setopt($ch, CURLOPT_URL, $gera_backup);
         curl_exec($ch);
         curl_close($ch);
+        curl_close($ch); // fecha conexão com curl
+        $this->limpa_cookie('/var/www/te-migrei/cookies/'.$this->cookie);
+
     }
 
     public function limpa_cookie($cookie) // ajustar função ----
@@ -234,7 +239,7 @@ class cPanel
             echo '<br>failed compactation<br>';
         }
 
-        $link = $this->dominio_deploy.'/download/'. $file .'.tar.gz';
+        $link = $this->url.'/download/'. $file .'.tar.gz';
         return $link;
     }
 
