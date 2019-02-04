@@ -22,7 +22,7 @@ $cpanel = new cPanel('sobek.servidordedicado.info','temigrei','@2138bTx');
 //echo '<br><br><br><br> LINK PARA BAIXAR BACKUP FTP: ';
 //echo $compacta;
 
-$cpanel->getDominio();
+echo $cpanel->getDominio();
 
 
 //$cpanel->descompacta('backup-12.31.2018_15-04-02_temigrei.tar.gz');
