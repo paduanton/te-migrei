@@ -4,7 +4,7 @@ include 'header.php';
 
 <div class="container-login100">
     <div class="wrap-cadastro100 animate-box" data-animate-effect="fadeInUp">
-        <form name="cadastroForm" class="validate-form">
+        <form name="cadastroForm" action="action.php" method="post">
             <span class="login100-form-title">
                 Dados CPANEL
                 <img src="assets/img/Logo-KingHost.png" width="40" height="34" class="img-fluid" alt="logo">
@@ -15,7 +15,7 @@ include 'header.php';
             </div>
 
             <div class="wrap-cadast100">
-                <input type="email" class="input100"  name="user" placeholder="Usuário">
+                <input type="text" class="input100"  name="usuario" placeholder="Usuário">
                 <span class="focus-input100"></span>
             </div>
 
@@ -29,7 +29,7 @@ include 'header.php';
 
             <div class="form-group text-center">
                 <br>
-                <input type="submit" value="Enviar" class="btn btn-primary" >
+                <input type="submit" value="Enviar" name="bt_envia" class="btn btn-primary" >
                 <input type="reset" value="Limpar" class="btn btn-primary">
             </div>
         </form>
