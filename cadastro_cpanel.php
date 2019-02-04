@@ -10,7 +10,7 @@ include 'header.php';
                 <img src="assets/img/Logo-KingHost.png" width="40" height="34" class="img-fluid" alt="logo">
             </span>
             <div class="wrap-cadast100">
-                <input type="text" class="input100" name="host" placeholder="Host do Cpanel">
+                <input type="text" class="input100" name="host" placeholder="Host do cPanel">
                 <span class="focus-input100"></span>
             </div>
 

@@ -32,11 +32,16 @@
         <ul class="mr-auto"></ul>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="/">Página Inicial</a>
+                <a class="nav-link" href="#">Página Inicial</a>
             </li>
             <li class="nav-item">
                 <a href="status.php" class="nav-link">
                     Status migrações
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="cadastro_cpanel.php" class="nav-link">
+                    Solicitar Migração
                 </a>
             </li>
             <li class="nav-item dropdown">
@@ -45,10 +50,10 @@
                     Opções
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/cadastro">Opção 1</a>
-                    <a class="dropdown-item" href="/lista/usuarios">Opção 2</a>
+                    <a class="dropdown-item" href="#">Opção 1</a>
+                    <a class="dropdown-item" href="#">Opção 2</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-center" href="/teste">Opção 3</a>
+                    <a class="dropdown-item text-center" href="#">Opção 3</a>
                 </div>
             </li>
         </ul>
