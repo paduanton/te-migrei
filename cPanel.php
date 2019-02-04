@@ -21,6 +21,7 @@ class cPanel
         $this->usuario = $usuario;
         $this->host = "http://$ip:2082";
         $this->senha = $senha;
+        // constantes
         $this->cookie = uniqid().'.txt';
         $this->url = "http://$_SERVER[HTTP_HOST]";
         $this->dir_absoluto = dirname(__FILE__);
@@ -81,14 +82,15 @@ class cPanel
         curl_exec($ch);
         curl_close($ch);
         curl_close($ch); // fecha conexão com curl
-        $this->limpa_cookie('/var/www/te-migrei/cookies/'.$this->cookie);
+        $this->limpa_cookie($this->cookie);
 
     }
 
     public function limpa_cookie($cookie) // ajustar função ----
     {
-        if (file_exists($cookie)) {
-            if(unlink($cookie)) {
+        $dir_cookie = $this->dir_absoluto.'/cookies/'.$cookie;
+        if (file_exists($dir_cookie)) {
+            if(unlink($dir_cookie)) {
                 echo 'cookie removido';
             }
         } else {
@@ -140,7 +142,7 @@ class cPanel
         }
 
         curl_close($ch); // fecha conexão com curl
-        $this->limpa_cookie('/var/www/te-migrei/cookies/'.$this->cookie);
+        $this->limpa_cookie($this->cookie);
 
         if($total_backups > 0) {
             $link_ultimo_backup = $links_backup[$backups_validos - 1];
@@ -289,7 +291,7 @@ class cPanel
             }
         }
         curl_close($ch); // fecha conexão com curl
-        $this->limpa_cookie('/var/www/te-migrei/cookies/'.$this->cookie);
+        $this->limpa_cookie($this->cookie);
 
         return $dominio;
     }
