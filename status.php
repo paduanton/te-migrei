@@ -1,6 +1,4 @@
-<?php
-include 'header.php';
-?>
+<?php include 'header.php'; ?>
 
 <div class="container">
     <ul class="list-group">
@@ -51,6 +49,4 @@ include 'header.php';
         </table>
     </div>
 </div>
-<?php
-include 'footer.php';
-?>
+<?php include 'footer.php'; ?>

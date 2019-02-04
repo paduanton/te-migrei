@@ -1,6 +1,4 @@
-<?php
-include 'header.php';
-?>
+<?php include 'header.php'; ?>
 
 <div class="container-login100">
     <div class="wrap-cadastro100 animate-box" data-animate-effect="fadeInUp">
@@ -57,6 +55,4 @@ include 'header.php';
     </div>
 </div>
 
-<?php
-include 'footer.php';
-?>
+<?php include 'footer.php'; ?>

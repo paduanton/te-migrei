@@ -12,13 +12,9 @@ class cPanel
     private $usuario;
     private $senha;
     private $cookie;
-
-    // interno
-    private $url_download;
-    private $nome_arq;
-    private $backup_dir = '/var/www/te-migrei/backup';
-    private $dir_raiz = '/var/www/te-migrei';
     private $url;
+    private $dir_absoluto;
+    private $dir_backup;
 
     function __construct($ip, $usuario, $senha)
     {
@@ -27,13 +23,15 @@ class cPanel
         $this->senha = $senha;
         $this->cookie = uniqid().'.txt';
         $this->url = "http://$_SERVER[HTTP_HOST]";
+        $this->dir_absoluto = dirname(__FILE__);
+        $this->dir_backup = $this->dir_absoluto.'/backup'; 
     }
 
     public function cookie(){
 
-        if(fopen($this->dir_raiz.'/cookies/'.$this->cookie, "w")) {
+        if(fopen($this->dir_absoluto.'/cookies/'.$this->cookie, "w")) {
             echo '<br>cookie criado<br>';
-            return $this->dir_raiz.'/cookies/'.$this->cookie;
+            return $this->dir_absoluto.'/cookies/'.$this->cookie;
         }
 
         echo 'erro no cookie';
@@ -193,7 +191,7 @@ class cPanel
         echo '<br><br>'.$down.'<br>';
         echo $comando.'<br>';
 
-        $move_backup = 'mv ' . $file[4]. ' ' . $this->backup_dir . '/';
+        $move_backup = 'mv ' . $file[4]. ' ' . $this->dir_backup . '/';
         echo $move_backup;
         $output = shell_exec($down);
 
@@ -220,7 +218,7 @@ class cPanel
 
     public function compacta_ftp($file) {
         echo "<br><br> -> Compactando estrutura FTP<br>";
-        $dir = $this->dir_raiz.'/'.$file . '/homedir/public_html';
+        $dir = $this->dir_absoluto.'/'.$file . '/homedir/public_html';
         echo $dir;
         if (is_dir($dir)) {
             chdir($file . '/homedir/public_html');
@@ -229,7 +227,7 @@ class cPanel
             echo '<br>não é dir 2';
         }
 
-        $compacta = 'tar -czvf '.$this->dir_raiz.'/download/'.$file.'.tar.gz * 2>&1';
+        $compacta = 'tar -czvf '.$this->dir_absoluto.'/download/'.$file.'.tar.gz * 2>&1';
         echo $compacta;
         $out = shell_exec($compacta);
 
@@ -248,13 +246,13 @@ class cPanel
         $arquivo = explode("=", $file); //  $arquivo[1];
         $arquivo2 = explode('.tar.gz', $arquivo[1]); //  $arquivo2[0];
 
-        $down = 'tar -vzxf '.$this->backup_dir.'/'. $file;
+        $down = 'tar -vzxf '.$this->dir_backup.'/'. $file;
         echo '<br><br>'.$down.'<br>';
         $output = shell_exec($down);
 
         if(is_dir($arquivo2[0])) {
-            echo '<br>success<br>';     // $this->backup_dir.
-            $chmod = 'chmod -R 777 ' . $this->backup_dir. '/' . $arquivo2[0]; // ajustar diretório
+            echo '<br>success<br>';     // $this->dir_backup.
+            $chmod = 'chmod -R 777 ' . $this->dir_backup. '/' . $arquivo2[0]; // ajustar diretório
             echo '<br><br>'.$chmod.'<br>';
             $output2 = shell_exec($chmod);
 
