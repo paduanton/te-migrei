@@ -1,8 +1,8 @@
 <?php include 'header.php'; ?>
 
 <div class="container-login100">
-    <div class="wrap-cadastro100 animate-box" data-animate-effect="fadeInUp">
-        <form name="cadastroForm" action="action.php" method="post">
+    <div class="wrap-cadastro100">
+        <form name="form_cpanel" action="action.php" method="post">
             <span class="login100-form-title">
                 Dados CPANEL
                 <img src="assets/img/Logo-KingHost.png" width="40" height="34" class="img-fluid" alt="logo">
@@ -31,27 +31,6 @@
                 <input type="reset" value="Limpar" class="btn btn-primary">
             </div>
         </form>
-    </div>
-</div>
-
-<div class="modal animate-box" data-animate-effect="fadeIn" tabindex="-1" role="dialog" id="modal-cadastro">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img src="assets/img/Logo-KingHost.png" id="logo-modal" class="img-fluid" alt="logo">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <p>{{feedbackUsuario}}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button"class="btn btn-outline-success"
-                        data-dismiss="modal">OK
-                </button>
-            </div>
-        </div>
     </div>
 </div>
 
