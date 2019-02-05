@@ -32,8 +32,6 @@ class DB
 
     public function inserir($tabela, $dados)
     {
-
-
         if (!empty($dados) && is_array($dados)) {
             $StringColuna = implode(',', array_keys($dados));
             $StringValor = ":" . implode(',:', array_keys($dados));
