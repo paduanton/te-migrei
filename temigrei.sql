@@ -5,7 +5,7 @@ CREATE TABLE `sync_migracao` (
   `url_cpanel` varchar(255) NOT NULL,
   `usuario_cpanel` varchar(255) NOT NULL,
   `senha_cpanel` varchar(255) NOT NULL,
-  `dominio` varchar(255) not null unique,
+  `dominio` varchar(255) not null,
   `status` varchar(255) NOT NULL,
   `data_solicitacao` datetime NOT NULL,
   `link_download` varchar(255),
