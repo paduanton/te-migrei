@@ -111,7 +111,9 @@ class cPanel
             $dominio = $this->getDominio();
 
             date_default_timezone_set('America/Sao_Paulo');
-            $now = (new DateTime('now'))->format('Y-d-m H:i:s');
+
+            $datetime = new DateTime('now');
+            $now = $datetime->format('Y-d-m H:i:s');
             $dados_usuario = array(
                 'url_cpanel' => $this->host,
                 'usuario_cpanel' => $this->usuario,

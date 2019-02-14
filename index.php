@@ -10,7 +10,7 @@ include 'cPanel.php';
 
 $cpanel = new cPanel('sobek.servidordedicado.info','temigrei','@2138bTx');
 
-echo '<br>LISTA BACKUP<br>';
+/*echo '<br>LISTA BACKUP<br>';
 $listar = $cpanel->lista_backup();
 echo '<br>BAIXAR BACKUP<br>';
 $baixar = $cpanel->baixa_backup($listar);
@@ -20,7 +20,7 @@ echo 'COMPACTANDO FTP';
 $compacta = $cpanel->compacta_ftp($descompacta);
 
 echo '<br><br><br><br> LINK PARA BAIXAR BACKUP FTP: ';
-echo 'link para download: '.$compacta;
+echo 'link para download: '.$compacta;*/
 
 //echo $cpanel->getDominio();
 
@@ -28,4 +28,4 @@ echo 'link para download: '.$compacta;
 //$cpanel->descompacta('backup-12.31.2018_15-04-02_temigrei.tar.gz');
 //$cpanel->valida_backup();
 
-//$cpanel->gera_backup();
+$cpanel->gera_backup();
