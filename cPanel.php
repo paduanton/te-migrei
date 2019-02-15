@@ -125,12 +125,12 @@ class cPanel
                 'analista_responsavel' => 'antonio.junior'
             );
 
-            $consulta = $banco->select($this->host, $dominio);
+            /*$consulta = $banco->select($this->host, $dominio);
 
             echo '<br>ECHO CONSUKLTA' . $consulta . '<br>';
             if ($consulta) {
                 $banco->inserir($nome_tabela, $dados_usuario);
-            }
+            }*/
         }
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados

@@ -53,17 +53,16 @@ class DB
         }
     }
 
-    public function select($host, $dominio) {
-        $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE `url_cpanel` = :url_cpanel AND `dominio` = :dominio;');
-        $consulta->bindParam(':url_cpanel', $host, PDO::PARAM_STR);
-        $consulta->bindParam(':dominio', $dominio, PDO::PARAM_STR);
+    public function select($id) {
+        $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE `id` = :id;');
+        $consulta->bindParam(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
         $linha = $consulta->fetch(PDO::FETCH_ASSOC);
 
         if(empty($linha)) {
-            return true; // continua migracao
+            return true;
         }
-        return false;
+        return false; // continua migração
     }
 
     public function update($id, $status, $link_download) {
@@ -76,8 +75,8 @@ class DB
     }
 
     public function getId($host, $dominio) {
-        $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE `url_cpanel` = :url_cpanel AND `dominio` = :dominio;');
-        $consulta->bindParam(':url_cpanel', $host, PDO::PARAM_STR);
+        $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE `host_cpanel` = :host_cpanel AND `dominio` = :dominio;');
+        $consulta->bindParam(':host_cpanel', $host, PDO::PARAM_STR);
         $consulta->bindParam(':dominio', $dominio, PDO::PARAM_STR);
         $consulta->execute();
         $linha = $consulta->fetch(PDO::FETCH_ASSOC);
