@@ -190,7 +190,7 @@ class cPanel
 
         $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c "'.$link_download.'" 2>&1';
 
-        $down = 'curl -O --cookie ' . $this->cookie . ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
+        $down = 'curl -O --cookie ' . $this->dir_absoluto.'/cookies/'.$this->cookie. ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
         echo '<br><br>'.$down.'<br>';
         echo $comando.'<br>';
 

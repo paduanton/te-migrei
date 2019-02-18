@@ -22,7 +22,7 @@ $compacta = $cpanel->compacta_ftp($descompacta);
 echo '<br><br><br><br> LINK PARA BAIXAR BACKUP FTP: ';
 echo 'link para download: '.$compacta;
 
-$cpanel->valida_cpanel();
+//$cpanel->valida_cpanel();
 
 
 //$cpanel->descompacta('backup-12.31.2018_15-04-02_temigrei.tar.gz');
