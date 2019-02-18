@@ -127,7 +127,7 @@ class cPanel
         $backups_validos = 0;
 
         foreach ($dom->getElementsByTagName('a') as $input) {
-//            if in progress
+
             if ($input->getAttribute('title') == 'complete' || $input->getAttribute('title') == 'timeout') {
 
                 $total_backups++; // quantidade de backups
@@ -206,7 +206,7 @@ class cPanel
             $output2 = shell_exec($move_backup);
 
             if($output2){
-            echo "<br>success2<br>";
+                echo "<br>success2<br>";
             } else {
                 echo '<br>failed<br>';
             }
