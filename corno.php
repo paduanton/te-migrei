@@ -18,7 +18,7 @@ $id = $argv[1];
 // status = Concluído
 // se tem registro com id continua migração
 
-$dados = $banco->select($id);
+$dados = $banco->select_by_id($id);
 
 if($dados == false) {
     echo 'linha vazia';

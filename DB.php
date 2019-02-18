@@ -53,7 +53,7 @@ class DB
         }
     }
 
-    public function select($id) {
+    public function select_by_id($id) {
         $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE `id` = :id;');
         $consulta->bindParam(':id', $id, PDO::PARAM_STR);
         $consulta->execute();

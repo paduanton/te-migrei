@@ -297,14 +297,23 @@ class cPanel
         return $dominio;
     }
 
-    /*public function valida_backup(){
+    public function valida_cpanel(){
         $ch = $this->inicia_curl();
         $retorno = curl_exec($ch);
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if($httpcode === 200) {
-
+            echo 'Logado com sucesso';
+            $this->limpa_cookie($this->cookie);
+            return $httpcode;
         }
-    }*/
+
+        echo 'Tentativa de login retornou status ' . $httpcode;
+
+        curl_close($ch); // fecha conexão com curl
+        $this->limpa_cookie($this->cookie);
+
+        return $httpcode;
+    }
 
 }
