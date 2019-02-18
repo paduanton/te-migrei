@@ -29,7 +29,7 @@ $status = 'Em andamento';
 
 $banco->update($id, $status, null);
 
-$cpanel = new cPanel($dados['host_cpanel'],$dados['usuario_cpanel'],$dados['senha_cpanel']);
+$cpanel = new cPanel($dados['host_cpanel'], $dados['usuario_cpanel'], $dados['senha_cpanel']);
 
 echo '<br>LISTA BACKUP<br>';
 $listar = $cpanel->lista_backup();
@@ -42,3 +42,7 @@ $compacta = $cpanel->compacta_ftp($descompacta);
 
 echo '<br><br><br><br> LINK PARA BAIXAR BACKUP FTP: ';
 echo 'link para download: '.$compacta;
+
+$status = 'Concluído';
+
+$banco->update($id, $status, $compacta);
