@@ -78,14 +78,14 @@ class DB
         ));
     }
 
-    public function getId($host, $dominio) {
+    public function get_id($host, $dominio) {
         $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE `host_cpanel` = :host_cpanel AND `dominio` = :dominio;');
         $consulta->bindParam(':host_cpanel', $host, PDO::PARAM_STR);
         $consulta->bindParam(':dominio', $dominio, PDO::PARAM_STR);
         $consulta->execute();
         $linha = $consulta->fetch(PDO::FETCH_ASSOC);
 
-        return $linha['id'];
+        return !empty($linha['id']) ? $linha['id']: false;
     }
 
 }

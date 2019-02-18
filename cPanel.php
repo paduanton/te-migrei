@@ -104,6 +104,7 @@ class cPanel
         $retorno = curl_exec($ch);
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados
+
         if (json_last_error()) {
             die('ERRO:' . PHP_EOL);
         }
