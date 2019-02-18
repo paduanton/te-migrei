@@ -5,7 +5,6 @@
  * Date: 10/09/18
  * Time: 15:29
  */
-include 'DB.php';
 
 class cPanel
 {
@@ -17,10 +16,10 @@ class cPanel
     private $dir_absoluto;
     private $dir_backup;
 
-    function __construct($ip, $usuario, $senha)
+    function __construct($host, $usuario, $senha)
     {
         $this->usuario = $usuario;
-        $this->host = "http://$ip:2082";
+        $this->host = "http://$host:2082";
         $this->senha = $senha;
         // constantes
         $this->cookie = uniqid().'.txt';
@@ -103,35 +102,6 @@ class cPanel
     {
         $ch = $this->inicia_curl();
         $retorno = curl_exec($ch);
-
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if($httpcode === 200) {
-            $banco = new DB();
-            $nome_tabela = 'sync_migracao';
-            $dominio = $this->getDominio();
-
-            date_default_timezone_set('America/Sao_Paulo');
-
-            $datetime = new DateTime('now');
-            $now = $datetime->format('Y-d-m H:i:s');
-            $dados_usuario = array(
-                'url_cpanel' => $this->host,
-                'usuario_cpanel' => $this->usuario,
-                'senha_cpanel' => $this->senha,
-                'dominio' => $dominio,
-                'status' => 'Pendente',
-                'data_solicitacao' => $now,
-                'link_download' => null,
-                'analista_responsavel' => 'antonio.junior'
-            );
-
-            /*$consulta = $banco->select($this->host, $dominio);
-
-            echo '<br>ECHO CONSUKLTA' . $consulta . '<br>';
-            if ($consulta) {
-                $banco->inserir($nome_tabela, $dados_usuario);
-            }*/
-        }
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados
         if (json_last_error()) {
@@ -270,11 +240,7 @@ class cPanel
         }
 
         $link = $this->url.'/download/'. $file .'.tar.gz';
-        $banco = new DB();
-        $dominio = $this->getDominio();
-        $id = $banco->getId($this->host, $dominio);
 
-        $banco->update($id,'Concluído', $link);
         return $link;
     }
 
@@ -303,7 +269,7 @@ class cPanel
         return $arquivo2[0];
     }
 
-    public function getDominio(){
+    public function get_dominio(){
 
         $ch = $this->inicia_curl();
         $retorno = curl_exec($ch);
@@ -330,5 +296,15 @@ class cPanel
 
         return $dominio;
     }
+
+    /*public function valida_backup(){
+        $ch = $this->inicia_curl();
+        $retorno = curl_exec($ch);
+
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if($httpcode === 200) {
+
+        }
+    }*/
 
 }

@@ -59,11 +59,15 @@ class DB
         $consulta->execute();
         $linha = $consulta->fetch(PDO::FETCH_ASSOC);
 
-        if(empty($linha)) {
-            return true;
-        }
-        return false; // continua migração
+//        if(empty($linha)) {
+//            return true;
+//        }
+//        return false; // continua migração
+
+        return !empty($linha) ? $linha : false;
     }
+
+
 
     public function update($id, $status, $link_download) {
         $atualiza = $this->db->prepare('UPDATE sync_migracao SET status = :status, link_download = :link_download WHERE id = :id');
@@ -84,10 +88,4 @@ class DB
         return $linha['id'];
     }
 
-    public function select_all(){
-        $consulta = $this->db->prepare('SELECT * FROM sync_migracao;');
-        $consulta->execute();
-        $consulta->fetch(PDO::FETCH_ASSOC);
-        return $consulta;
-    }
 }
