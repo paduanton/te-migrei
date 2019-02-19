@@ -68,4 +68,6 @@
         </table>
     </div>
 </div>
+
+    <script>setTimeout("location.reload(true);",5000);</script>
 <?php include 'footer.php'; ?>

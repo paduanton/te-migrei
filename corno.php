@@ -31,17 +31,16 @@ $banco->update($id, $status, null);
 
 $cpanel = new cPanel($dados['host_cpanel'], $dados['usuario_cpanel'], $dados['senha_cpanel']);
 
-echo '<br>LISTA BACKUP<br>';
 $listar = $cpanel->lista_backup();
-echo '<br>BAIXAR BACKUP<br>';
-$baixar = $cpanel->baixa_backup($listar);
-echo '<br><br>DESCOMPACTAR BACKUP<br><br>';
-$descompacta = $cpanel->descompacta($baixar);
-echo 'COMPACTANDO FTP';
-$compacta = $cpanel->compacta_ftp($descompacta);
 
-echo '<br><br><br><br> LINK PARA BAIXAR BACKUP FTP: ';
-echo 'link para download: '.$compacta;
+$baixar = $cpanel->baixa_backup($listar);
+
+$descompacta = $cpanel->descompacta($baixar);
+
+$link_download = $cpanel->compacta_ftp($descompacta);
+
+
+echo 'link para download: '. $link_download ;
 
 $status = 'Concluído';
 
