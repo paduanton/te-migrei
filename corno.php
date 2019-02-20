@@ -11,7 +11,9 @@ include_once('cPanel.php');
 
 $banco = new DB();
 
-$id = $argv[1];
+$id = $_SERVER['argv'][1];
+
+
 
 // status = Pendente
 // status = Em andamento
