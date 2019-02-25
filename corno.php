@@ -13,13 +13,6 @@ $banco = new DB();
 
 $id = $_SERVER['argv'][1];
 
-
-
-// status = Pendente
-// status = Em andamento
-// status = Concluído
-// se tem registro com id continua migração
-
 $dados = $banco->select_by_id($id);
 
 if($dados == false) {
