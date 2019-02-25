@@ -3,6 +3,16 @@
 require_once('DB.php');
 
 $banco = new DB();
+
+/*$maximo = 5;
+$rodando = quantos_tem();
+
+$limit = $maximo - $rodando;
+if($limit == 0){
+    echo "Máximo de migracoes paralelas atingido";
+    exit;
+}*/
+
 $migracoes = $banco->get_pendentes();
 
 foreach($migracoes as $migracao){
@@ -10,12 +20,3 @@ foreach($migracoes as $migracao){
     echo 'EXECUTANDO: ' . $cmd;
     shell_exec($cmd);
 }
-
-#;cron.php
-
-#select * from sync_migracao where status='pendente' LIMIT 3;
-
-#foreach
-#    shell_exec('$(which nohup) $(which php) -q /home/temigrei/executa-migracao.php '.$id.' >/dev/null && echo $!')
-
-
