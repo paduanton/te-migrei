@@ -32,11 +32,6 @@
                 </td>
                 <td>
                     <a href="#">
-                        Analista Responsável
-                    </a>
-                </td>
-                <td>
-                    <a href="#">
                         Link Download
                     </a>
                 </td>
@@ -45,23 +40,19 @@
             <tbody>
             <tr>
                 <?php
-                try {
-                    $pdo = new PDO('mysql:host=127.0.0.1;dbname=temigrei', 'root', 'nheac4257');
-                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                require_once ('DB.php');
+                $banco = new DB();
 
-                } catch(PDOException $e) {
-                    echo 'Error: ' . $e->getMessage();
-                }
+                $tabela = 'sync_migracao';
+                $dados = $banco->select($tabela);
 
-
-                $sth = $pdo->query('SELECT * FROM sync_migracao');
-                while($row = $sth->fetch(PDO::FETCH_OBJ)){ ?>
-                <td><?php echo $row->id; ?></td> <!-- {{$index + 1}} -->
-                <td><?php echo $row->dominio; ?></td>
-                <td><?php echo $row->status; ?></td>
-                <td><?php echo $row->data_solicitacao; ?></td>
-                <td><?php echo $row->analista_responsavel; ?></td>
-                <td><?php echo $row->link_download; ?></td>
+                foreach($dados as $dado){
+                    echo "<td>".$dado["id"]."</td>";
+                    echo "<td>".$dado["dominio"]."</td>";
+                    echo "<td>".$dado["status"]."</td>";
+                    echo "<td>".$dado["data_solicitacao"]."</td>";
+                    echo "<td>".$dado["link_download"]."</td><Br>";
+                ?>
             </tr>
             <?php } ?>
             </tbody>

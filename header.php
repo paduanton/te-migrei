@@ -30,9 +30,9 @@
     <div id="navbarNavDropdown" class="navbar-collapse collapse">
         <ul class="mr-auto"></ul>
         <ul class="navbar-nav">
-            <li class="nav-item">
+            <!--<li class="nav-item">
                 <a class="nav-link" href="#">Página Inicial</a>
-            </li>
+            </li>-->
             <li class="nav-item">
                 <a href="status.php" class="nav-link">
                     Status migrações
@@ -43,7 +43,7 @@
                     Solicitar Migração
                 </a>
             </li>
-            <li class="nav-item dropdown">
+            <!--<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Opções
@@ -54,7 +54,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-center" href="#">Opção 3</a>
                 </div>
-            </li>
+            </li>-->
         </ul>
     </div>
 </nav>
