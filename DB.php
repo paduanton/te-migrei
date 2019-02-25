@@ -68,7 +68,6 @@ class DB
     }
 
 
-
     public function update($id, $status, $link_download) {
         $atualiza = $this->db->prepare('UPDATE sync_migracao SET status = :status, link_download = :link_download WHERE id = :id');
         $atualiza->execute(array(
@@ -76,6 +75,13 @@ class DB
             ':status' => $status,
             ':link_download'=> $link_download
         ));
+    }
+
+    public function get_pendentes(){
+        $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE status="pendente" LIMIT 3');
+        //$consulta->bindParam(':status', 'pendente', PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function get_id($host, $dominio) {
