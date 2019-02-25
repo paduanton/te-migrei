@@ -78,7 +78,7 @@ class DB
     }
 
     public function get_pendentes($limit=3){
-        $consulta = $this->db->pre3e('SELECT * FROM sync_migracao WHERE status="pendente" LIMIT ' . $limit);
+        $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE status="Pendente" LIMIT ' . $limit);
         //$consulta->bindParam(':status', 'pendente', PDO::PARAM_STR);
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_ASSOC);
