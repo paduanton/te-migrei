@@ -143,7 +143,7 @@ class cPanel
         }
 
         curl_close($ch); // fecha conexão com curl
-        $this->limpa_cookie($this->cookie);
+//        $this->limpa_cookie($this->cookie);
 
         if($total_backups > 0) {
             $link_ultimo_backup = $links_backup[$backups_validos - 1];
