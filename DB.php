@@ -19,15 +19,14 @@ class DB
 
     public function __construct()
     {
-        if (!isset($this->db)) {
-            try {
-                $conexao = new PDO("mysql:host=" . $this->db_host . ";dbname=" . $this->db_nome, $this->db_usuario, $this->db_senha);
-                $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $this->db = $conexao;
-            } catch (PDOException $e) {
-                die("Falha ao conectar com MySQL: " . $e->getMessage());
-            }
+        try {
+            $conexao = new PDO("mysql:host=" . $this->db_host . ";dbname=" . $this->db_nome, $this->db_usuario, $this->db_senha);
+            $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->db = $conexao;
+        } catch (PDOException $e) {
+            die("Falha ao conectar com MySQL: " . $e->getMessage());
         }
+
     }
 
     public function inserir($tabela, $dados)
