@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="cadastro_cpanel.php" class="nav-link">
+                <a href="index.php" class="nav-link">
                     Solicitar Migração
                 </a>
             </li>

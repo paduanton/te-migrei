@@ -1,31 +1,37 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: antonio
- * Date: 10/12/18
- * Time: 14:55
- */
+<?php include 'header.php'; ?>
 
-include 'cPanel.php';
+<div class="container-login100">
+    <div class="wrap-cadastro100">
+        <form name="form_cpanel" action="action.php" method="post">
+            <span class="login100-form-title">
+                Dados CPANEL
+                <img src="assets/img/Logo-KingHost.png" width="40" height="34" class="img-fluid" alt="logo">
+            </span>
+            <div class="wrap-cadast100">
+                <input type="text" class="input100" name="host" placeholder="Host do cPanel">
+                <span class="focus-input100"></span>
+            </div>
 
-$cpanel = new cPanel('cloud008.ca.san.psi.br','sgsoftgr','grafica1999/2018');
+            <div class="wrap-cadast100">
+                <input type="text" class="input100"  name="usuario" placeholder="Usuário">
+                <span class="focus-input100"></span>
+            </div>
 
-echo '<br>LISTA BACKUP<br>';
-$listar = $cpanel->lista_backup();
-echo '<br>BAIXAR BACKUP<br>';
-$baixar = $cpanel->baixa_backup($listar);
-echo '<br><br>DESCOMPACTAR BACKUP<br><br>';
-$descompacta = $cpanel->descompacta($baixar);
-echo 'COMPACTANDO FTP';
-$compacta = $cpanel->compacta_ftp($descompacta);
+            <div class="wrap-cadast100">
+                    <span class="btn-show-pass">
+                        <i class="zmdi zmdi-eye"></i>
+                    </span>
+                <input type="password" class="input100" name="senha" placeholder="Senha">
+                <span class="focus-input100"></span>
+            </div>
 
-echo '<br><br><br><br> LINK PARA BAIXAR BACKUP FTP: ';
-echo 'link para download: '.$compacta;
+            <div class="form-group text-center">
+                <br>
+                <input type="submit" value="Enviar" name="bt_envia" class="btn btn-primary" >
+                <input type="reset" value="Limpar" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
 
-//$cpanel->valida_cpanel();
-
-
-//$cpanel->descompacta('backup-12.31.2018_15-04-02_temigrei.tar.gz');
-//$cpanel->valida_backup();
-
-//$cpanel->gera_backup();
+<?php include 'footer.php'; ?>
