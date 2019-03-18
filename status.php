@@ -57,7 +57,7 @@ $dados = $banco->select_pendente($status);
                     echo "<td>".$dado["dominio"]."</td>";
                     echo "<td>".$dado["status"]."</td>";
                     echo "<td>".$dado["data_solicitacao"]."</td>";
-                    echo "<td>".$dado["link_download"]."</td><Br>";
+                    echo "<td>".$dado["link_download"]."</td>";
                 ?>
             </tr>
             <?php } ?>
