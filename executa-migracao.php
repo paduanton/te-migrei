@@ -32,6 +32,9 @@ $banco->update_status_migracao($id, $status, null);
 
 $listar = $cpanel->lista_backup();
 
+//$dominio = $cpanel->get_dominio();
+//$banco->update_dominio($id, $dominio);
+
 $status = 'Baixando backup';
 
 $banco->update_status_migracao($id, $status, null);

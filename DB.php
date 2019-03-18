@@ -91,6 +91,18 @@ class DB
         return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function select_pendente($status)
+    {
+        $consulta = $this->db->prepare('SELECT COUNT(*) FROM `sync_migracao` WHERE `status` = :status;');
+        $consulta->bindParam(':status', $status, PDO::PARAM_STR);
+        $consulta->execute();
+        $linha = $consulta->fetchColumn();
+
+
+
+        return !empty($linha) ? $linha : false;
+    }
+
     public function select($tabela){
         $consulta = $this->db->prepare('SELECT * FROM ' . $tabela);
         $consulta->execute();
