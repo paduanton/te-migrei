@@ -18,6 +18,7 @@ $dir_absoluto = dirname(__FILE__);
 
 foreach($migracoes as $migracao){
     $cmd = '$(which nohup) $(which php) -q '.$dir_absoluto.'/executa-migracao.php '.$migracao['id'].' >/dev/null && echo $!';
-    echo 'EXECUTANDO: ' . $cmd;
+    echo date('[d/m/Y H:i:s]') . 'EXECUTANDO: ' . $cmd;
     shell_exec($cmd);
+    sleep(5);
 }
