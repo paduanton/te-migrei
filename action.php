@@ -59,5 +59,5 @@ if (isset($_POST['bt_envia'])) {
 
     var_dump($insert);
 
-    header ("location: http://localhost/status.php");
+    header ("location: http://$_SERVER[HTTP_HOST]/status.php");
 }
