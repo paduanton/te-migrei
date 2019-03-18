@@ -14,9 +14,10 @@ if($limit == 0){
 }*/
 
 $migracoes = $banco->get_pendentes();
+$dir_absoluto = dirname(__FILE__);
 
 foreach($migracoes as $migracao){
-    $cmd = '$(which nohup) $(which php) -q /home/temigrei/executa-migracao.php '.$migracao['id'].' >/dev/null && echo $!';
+    $cmd = '$(which nohup) $(which php) -q '.$dir_absoluto.'/executa-migracao.php '.$migracao['id'].' >/dev/null && echo $!';
     echo 'EXECUTANDO: ' . $cmd;
     shell_exec($cmd);
 }
