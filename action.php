@@ -29,6 +29,7 @@ if (isset($_POST['bt_envia'])) {
     $http_status = $cpanel->valida_cpanel();
 
     if($http_status != 200) {
+        echo 'NÃO LOGADO';
         die('Erro:'. $http_status );
     }
 

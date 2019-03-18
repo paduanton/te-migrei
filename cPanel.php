@@ -23,7 +23,7 @@ class cPanel
         $this->senha = $senha;
         // constantes
         $this->cookie = uniqid().'.txt';
-        $this->url = "http://$_SERVER[HTTP_HOST]";
+        $this->url = "http://temigrei.kinghost.com.br";
         $this->dir_absoluto = dirname(__FILE__);
         $this->dir_backup = $this->dir_absoluto.'/backup'; 
     }
@@ -59,6 +59,8 @@ class cPanel
         curl_setopt($ch, CURLOPT_COOKIEFILE, $nome_cookie);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dados_usuario));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_NOPROGRESS, false); // necessário para fazer o progresso funcionar
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         return $ch; // string com url de login fragmentada
 
@@ -160,6 +162,7 @@ class cPanel
             echo 'Data último backup: ' . $data_ultimo_backup;
 
             $data_atual = date('d-m-Y');
+//            $data_atual = date('d-m-Y',strtotime("-9 day")); //strtotime("-2 day")) para debug
 
             echo '<br>Data atual: ' . $data_atual;
 
@@ -188,30 +191,28 @@ class cPanel
     {
         $file = explode("/", $link_download); //  $file[4]; = download?file=backup-12.31.2018_15-04-02_temigrei.tar.gz
 
-        $comando = 'wget --http-user='.$this->usuario .' --http-password='.$this->senha .' --load-cookies '.$this->cookie.' -c "'.$link_download.'" 2>&1';
-
-        $down = 'curl -O --cookie ' . $this->dir_absoluto.'/cookies/'.$this->cookie. ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
+        $down = 'curl -O -L --insecure --retry 10 --retry-delay 5 --location --cookie ' . $this->dir_absoluto.'/cookies/'.$this->cookie. ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
         echo '<br><br>'.$down.'<br>';
-        echo $comando.'<br>';
 
         $move_backup = 'mv ' . $file[4]. ' ' . $this->dir_backup . '/';
+
         echo $move_backup;
+
         $output = shell_exec($down);
 
-
         if ($output) {
-            echo "<br>success:<br>";
+            echo "<br>EXECUTANDO DOWNLOAD: <br>";
             print $output;
 
             $output2 = shell_exec($move_backup);
 
             if($output2){
-                echo "<br>success2<br>";
+                echo "<br>SUCESSO AO MOVER BACKUP<br>";
             } else {
-                echo '<br>failed<br>';
+                echo '<br>FALHA AO MOVER BACKUP<br>';
             }
         } else {
-            echo '<br>fail:<br>';
+            echo '<br>FALHA AO EXECUTAR DOWNLOAD: <br>';
             print $output;
         }
 //        passthru($down);
@@ -230,14 +231,16 @@ class cPanel
             echo '<br>não é dir 2';
         }
 
-        $compacta = 'tar -czvf '.$this->dir_absoluto.'/download/'.$file.'.tar.gz * 2>&1';
+        $compacta = 'tar -cf '.$this->dir_absoluto.'/download/'.$file.'.tar.gz * 2>&1';
+
         echo $compacta;
+
         $out = shell_exec($compacta);
 
         if($out) {
-            echo '<br>succed compactation<br>';
+            echo '<br>PUBLIC_HTML COMPACTADA COM SUCESSO<br>';
         } else {
-            echo '<br>failed compactation<br>';
+            echo '<br>FALHA AO COMPACTAR PUBLIC_HTML<br>';
         }
 
         $link = $this->url.'/download/'. $file .'.tar.gz';
@@ -250,21 +253,33 @@ class cPanel
         $arquivo = explode("=", $file); //  $arquivo[1];
         $arquivo2 = explode('.tar.gz', $arquivo[1]); //  $arquivo2[0];
 
-        $down = 'tar -vzxf '.$this->dir_backup.'/'. $file;
+        $down = 'tar -xf '.$this->dir_backup.'/'. $file;
+
+        $remove_dir = 'rm -rf ' . $arquivo2[0];
+
+        echo '<br>' .$remove_dir. '<br>';
         echo '<br><br>'.$down.'<br>';
+
         $output = shell_exec($down);
 
         if(is_dir($arquivo2[0])) {
-            echo '<br>success<br>';     // $this->dir_backup.
+            echo '<br>PERMISSÃO ARQUIVOS<br>';     // $this->dir_backup.
             $chmod = 'chmod -R 777 ' . $this->dir_backup. '/' . $arquivo2[0]; // ajustar diretório
             echo '<br><br>'.$chmod.'<br>';
             $output2 = shell_exec($chmod);
 
             if($output2) {
-                echo '<br>success 2';
+                echo '<br>PERMISSÃO ADICIONADA COM SUCESSO';
             }
         } else {
-            echo '<br>fail<br>';
+            echo '<br>FALHA AO ADICIONAR PERMISSÃO<br>';
+        }
+
+        $limpa_backup = shell_exec($remove_dir);
+        if($limpa_backup){
+            echo '<br>BACKUP LIMPO<br>';
+        } else {
+            echo '<br>FALHA AO LIMPAR BACKUP<br>';
         }
 
         return $arquivo2[0];
@@ -277,7 +292,7 @@ class cPanel
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados
         if (json_last_error()) {
-            die('ERRO:' . PHP_EOL);
+            die('FALHA DE LOGIN: ' . PHP_EOL);
         }
 
        $url2 = $this->host . $output['redirect'];
