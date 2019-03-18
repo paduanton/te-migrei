@@ -75,6 +75,15 @@ class DB
         ));
     }
 
+    public function update_dominio($id, $dominio) {
+        $atualiza = $this->db->prepare('UPDATE sync_migracao SET  dominio = :dominio WHERE id = :id');
+        $atualiza->execute(array(
+            ':id'   => $id,
+            ':dominio' => $dominio,
+
+        ));
+    }
+
     public function get_pendentes($limit=3){
         $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE status="Pendente" LIMIT ' . $limit);
         //$consulta->bindParam(':status', 'pendente', PDO::PARAM_STR);
