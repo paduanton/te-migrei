@@ -41,11 +41,10 @@ class DB
                 $query->bindValue(':' . $key, $val);
             }
             $insert = $query->execute();
+
             if ($insert) {
                 $dados['id'] = $this->db->lastInsertId();
-                return $dados;
-            } else {
-                return false;
+                return !empty($dados) ? $dados : false;
             }
         } else {
             return false;
@@ -57,11 +56,6 @@ class DB
         $consulta->bindParam(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
         $linha = $consulta->fetch(PDO::FETCH_ASSOC);
-
-//        if(empty($linha)) {
-//            return true;
-//        }
-//        return false; // continua migração
 
         return !empty($linha) ? $linha : false;
     }
@@ -88,7 +82,9 @@ class DB
         $consulta = $this->db->prepare('SELECT * FROM sync_migracao WHERE status="Pendente" LIMIT ' . $limit);
         //$consulta->bindParam(':status', 'pendente', PDO::PARAM_STR);
         $consulta->execute();
-        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $result = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+        return !empty($result) ? $result : false;
     }
 
     public function select_pendente($status)
@@ -97,8 +93,6 @@ class DB
         $consulta->bindParam(':status', $status, PDO::PARAM_STR);
         $consulta->execute();
         $linha = $consulta->fetchColumn();
-
-
 
         return !empty($linha) ? $linha : false;
     }
