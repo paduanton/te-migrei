@@ -29,12 +29,10 @@ class cPanel
     public function cookie(){
 
         if(fopen($this->dir_absoluto.'/cookies/'.$this->cookie, "w")) {
-            echo '<br>cookie criado<br>';
+//            echo '<br>cookie criado<br>';
             return $this->dir_absoluto.'/cookies/'.$this->cookie;
         }
-
-        echo 'erro no cookie';
-
+//        echo 'erro no cookie';
         return null;
     }
 
@@ -91,10 +89,10 @@ class cPanel
         $dir_cookie = $this->dir_absoluto.'/cookies/'.$cookie;
         if (file_exists($dir_cookie)) {
             if(unlink($dir_cookie)) {
-                echo 'cookie removido';
+//                echo 'cookie removido';
             }
         } else {
-            echo 'cookie não existe';
+//            echo 'cookie não existe';
         }
     }
 
@@ -136,7 +134,7 @@ class cPanel
                     $link_download = $input->getAttribute('href');
                     $links_backup[$backups_validos] = $link_download;
                     $backups_validos++; // quantidade de backups válidos
-                    echo $link_download; // mostra links de download de todos backups completos
+                    echo $link_download; // mostra links de downloads de todos backups completos
                     echo "<br/>";
                 }
             }
@@ -187,7 +185,7 @@ class cPanel
 
     public function baixa_backup($link_download)
     {
-        $file = explode("/", $link_download); //  $file[4]; = download?file=backup-12.31.2018_15-04-02_temigrei.tar.gz
+        $file = explode("/", $link_download); //  $file[4]; = downloads?file=backup-12.31.2018_15-04-02_temigrei.tar.gz
 
         $down = 'curl -O -L --insecure --retry 10 --retry-delay 5 --location --cookie ' . $this->dir_absoluto.'/cookies/'.$this->cookie. ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
 
@@ -238,7 +236,8 @@ class cPanel
 
         $output = json_decode($retorno, true); // gera array com "retornos" gerados
         if (json_last_error()) {
-            die('FALHA DE LOGIN: ' . PHP_EOL);
+            $this->limpa_cookie($this->cookie);
+            die(); // 'FALHA DE LOGIN: ' . PHP_EOL
         }
 
        $url2 = $this->host . $output['redirect'];
@@ -265,12 +264,9 @@ class cPanel
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if($httpcode === 200) {
-            echo 'Logado com sucesso';
             $this->limpa_cookie($this->cookie);
             return $httpcode;
         }
-
-        echo 'Tentativa de login retornou status ' . $httpcode;
 
         curl_close($ch); // fecha conexão com curl
         $this->limpa_cookie($this->cookie);

@@ -50,7 +50,7 @@ $banco->update_status_migracao($id, $status, null);
 
 $link_download = $cpanel->compacta_ftp($descompacta);
 
-echo 'link para download: '. $link_download ;
+echo 'link para downloads: '. $link_download ;
 
 $status = 'Concluído';
 

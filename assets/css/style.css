@@ -243,6 +243,9 @@ td a:hover {
     background: linear-gradient(left, #313131, #6e6e6e);
 }
 
+#voltar {
+    color: #FFF;
+}
 .focus-input100::after {
     font-size: 15px;
     color: #999999;
@@ -270,10 +273,12 @@ td a:hover {
 
 .btn-primary {
     border: none;
-    width: 80px;
     border-radius: 15px;
 }
 
+.btn-form {
+    width: 80px;
+}
 @media (max-width: 576px) {
     .wrap-cadastro100 {
         padding: 77px 15px 33px 15px;
