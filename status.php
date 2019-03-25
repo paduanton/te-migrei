@@ -4,13 +4,12 @@ require_once ('DB.php');
 $banco = new DB();
 
 $status = 'Pendente';
-$dados = $banco->select_pendente($status);
-
+$count = $banco->select_pendente($status);
 ?>
 
 <div class="container-fluid">
     <ul class="list-group">
-        <li class="list-group-item">Total de migrações pendentes: <?php  print_r ($dados);?></li>
+        <li class="list-group-item">Total de migrações pendentes: <?php print_r (!empty($count) ? $count : 0);?></li>
     </ul>
 
     <div class="table-responsive">
