@@ -14,7 +14,6 @@ class cPanel
     private $cookie;
     private $url;
     private $dir_absoluto;
-    private $dir_backup;
 
     function __construct($host, $usuario, $senha)
     {
@@ -25,7 +24,6 @@ class cPanel
         $this->cookie = uniqid().'.txt';
         $this->url = "http://temigrei.kinghost.com.br";
         $this->dir_absoluto = dirname(__FILE__);
-        $this->dir_backup = $this->dir_absoluto.'/backup'; 
     }
 
     public function cookie(){
