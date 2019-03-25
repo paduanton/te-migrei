@@ -20,11 +20,6 @@ $dados = $banco->select_pendente($status);
             <tr>
                 <td>
                     <a href="#">
-                        id
-                    </a>
-                </td>
-                <td>
-                    <a href="#">
                         Domínio
                     </a>
                 </td>
@@ -35,7 +30,7 @@ $dados = $banco->select_pendente($status);
                 </td>
                 <td>
                     <a href="#">
-                        Data
+                        Data da Solicitação
                     </a>
                 </td>
                 <td>
@@ -52,8 +47,7 @@ $dados = $banco->select_pendente($status);
                 $tabela = 'sync_migracao';
                 $dados = $banco->select($tabela);
 
-                foreach($dados as $dado){
-                    echo "<td>".$dado["id"]."</td>";
+                foreach($dados as $dado) {
                     echo "<td>".$dado["dominio"]."</td>";
                     echo "<td>".$dado["status"]."</td>";
                     echo "<td>".$dado["data_solicitacao"]."</td>";
