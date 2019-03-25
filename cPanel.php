@@ -192,97 +192,45 @@ class cPanel
         $file = explode("/", $link_download); //  $file[4]; = download?file=backup-12.31.2018_15-04-02_temigrei.tar.gz
 
         $down = 'curl -O -L --insecure --retry 10 --retry-delay 5 --location --cookie ' . $this->dir_absoluto.'/cookies/'.$this->cookie. ' "' . $link_download.'" 2>&1'; //        > /var/www/te-migrei
-        echo '<br><br>'.$down.'<br>';
 
-        $move_backup = 'mv ' . $file[4]. ' ' . $this->dir_backup . '/';
-
-        echo $move_backup;
-
-        $output = shell_exec($down);
-
-        if ($output) {
-            echo "<br>EXECUTANDO DOWNLOAD: <br>";
-            print $output;
-
-            $output2 = shell_exec($move_backup);
-
-            if($output2){
-                echo "<br>SUCESSO AO MOVER BACKUP<br>";
-            } else {
-                echo '<br>FALHA AO MOVER BACKUP<br>';
-            }
-        } else {
-            echo '<br>FALHA AO EXECUTAR DOWNLOAD: <br>';
-            print $output;
-        }
-//        passthru($down);
+        $output = shell_exec($down); //executa o curl
 
         return $file[4];
     }
 
     public function compacta_ftp($file) {
         echo "<br><br> -> Compactando estrutura FTP<br>";
-        $dir = $this->dir_absoluto.'/'.$file . '/homedir/public_html';
-        echo $dir;
-        if (is_dir($dir)) {
-            chdir($file . '/homedir/public_html');
-            echo '<br>é dir';
-        } else {
-            echo '<br>não é dir 2';
-        }
+        $dir = $file . '/homedir/public_html';
+        $compacta = 'tar -cf '. $file.'.tar.gz '  . $dir;
+        $rm_pasta = 'rm -Rf ' . $file;
+        $mv_download = 'mv ' .$file.'.tar.gz downloads';
 
-        $compacta = 'tar -cf '.$this->dir_absoluto.'/download/'.$file.'.tar.gz * 2>&1';
-
-        echo $compacta;
+        //echo 'o que vai ser compactado -> ' . $compacta;
+        //echo 'AQUI O MOVE BACKUP -> ' . $move_backup;
+        //echo 'diretório completo -> ' . $dir;
 
         $out = shell_exec($compacta);
+        $out2 = shell_exec($rm_pasta);
+        $out3 = shell_exec($mv_download);
 
-        if($out) {
-            echo '<br>PUBLIC_HTML COMPACTADA COM SUCESSO<br>';
-        } else {
-            echo '<br>FALHA AO COMPACTAR PUBLIC_HTML<br>';
-        }
-
-        $link = $this->url.'/download/'. $file .'.tar.gz';
+        $link = $this->url.'/downloads/'. $file .'.tar.gz';
 
         return $link;
+
+
     }
 
     public function descompacta($file)
     {
-        $arquivo = explode("=", $file); //  $arquivo[1];
-        $arquivo2 = explode('.tar.gz', $arquivo[1]); //  $arquivo2[0];
+        $arquivo = explode("=", $file);
+        $arquivo2 = explode('.tar.gz', $arquivo[1]);
 
-        $down = 'tar -xf '.$this->dir_backup.'/'. $file;
-
-        $remove_dir = 'rm -rf ' . $arquivo2[0];
-
-        echo '<br>' .$remove_dir. '<br>';
-        echo '<br><br>'.$down.'<br>';
+        $down = 'tar -vxf '. $file . ' ' . $arquivo2[0] .'/homedir/public_html';
 
         $output = shell_exec($down);
 
-        if(is_dir($arquivo2[0])) {
-            echo '<br>PERMISSÃO ARQUIVOS<br>';     // $this->dir_backup.
-            $chmod = 'chmod -R 777 ' . $this->dir_backup. '/' . $arquivo2[0]; // ajustar diretório
-            echo '<br><br>'.$chmod.'<br>';
-            $output2 = shell_exec($chmod);
-
-            if($output2) {
-                echo '<br>PERMISSÃO ADICIONADA COM SUCESSO';
-            }
-        } else {
-            echo '<br>FALHA AO ADICIONAR PERMISSÃO<br>';
-        }
-
-        $limpa_backup = shell_exec($remove_dir);
-        if($limpa_backup){
-            echo '<br>BACKUP LIMPO<br>';
-        } else {
-            echo '<br>FALHA AO LIMPAR BACKUP<br>';
-        }
-
         return $arquivo2[0];
+
     }
 
     public function get_dominio(){
